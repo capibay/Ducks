@@ -13,7 +13,7 @@ let bows = [
             y: 33
 
         },
-        maxTension: 40
+        maxTension: 60
     }
 ]
 
@@ -22,7 +22,7 @@ let bows = [
 class Archer {
     constructor() {
         this.bow;
-        this.position = new Vector(200, 450);
+        this.position = new Vector(220, 450);
         this.angle = 0;
         this.currentArrow;
         this.isAiming = false;
@@ -52,9 +52,9 @@ class Archer {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
         ctx.rotate(this.angle);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "blue";
         ctx.drawImage(this.bow.image, -this.bow.size / 2, -this.bow.size / 2, this.bow.size, this.bow.size);
-        ctx.fillRect(0, 0, 2, 2);
+        // ctx.fillRect(0, 0, 5, 5);
         this.createBowstring()
         if (this.isAiming)
             this.currentArrow.setOnBow(this.position, this.tension)
@@ -76,6 +76,10 @@ class Archer {
             if (this.tension > this.bow.maxTension + this.bow.bowstring.y) {
                 this.tension = this.bow.maxTension + this.bow.bowstring.y
             }
+            if (this.tension < this.bow.bowstring.y) {
+                this.tension = this.bow.bowstring.y
+            }
+
 
         }
 
@@ -83,12 +87,12 @@ class Archer {
             this.isAiming = false;
             this.shoot()
             canvas.removeEventListener('mousemove', targeting)
-            canvas.removeEventListener('mouseup', shooting)
+            window.removeEventListener('mouseup', shooting)
         }
 
         canvas.addEventListener('mousemove', targeting)
 
-        canvas.addEventListener('mouseup', shooting)
+        window.addEventListener('mouseup', shooting)
 
 
     }
@@ -111,11 +115,13 @@ class Archer {
 
     shoot() {
         game.addObject(this.currentArrow);
-        let vec = this.position.clone()
-        vec.x += Math.cos(this.angle);
-        vec.y += Math.sin(this.angle);
-        this.currentArrow.relase(vec)
-        this.currentArrow = undefined;
+        let vec = new Vector()
+        vec.x = Math.cos(this.angle - Math.PI / 2);
+        vec.y = Math.sin(this.angle - Math.PI / 2);
+        vec.normalize()
+        vec.mult(this.tension / 10)
+        this.currentArrow.relase(vec, this.position.y)
+        // this.currentArrow = new Object();
     }
 
 }

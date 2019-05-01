@@ -54,4 +54,22 @@ class Vector {
         this.x = -x;
         this.y = -y;
     }
+
+    dot(vec) {
+        return Number(this.x * vec.x) + Number(this.y * vec.y);
+    }
+
+    det(vec) {
+        return Number(this.x * vec.y) - Number(this.y * vec.x);
+    }
+
+    angleBetween(vec) {
+        let cosa = Number(this.dot(vec) / (this.mag() * vec.mag()))
+        return Math.acos(cosa);
+    }
+
+    angleBetween360(vec) {
+
+        return Math.atan2(this.det(vec), this.dot(vec))
+    }
 }

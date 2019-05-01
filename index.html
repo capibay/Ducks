@@ -52,12 +52,13 @@
 <body>
 
     <div class="container">
-        <canvas id="canvas" width="900" height="600"></canvas>
+        <canvas id="canvas" width="1000" height="700"></canvas>
     </div>
 
     <script src="./js/Vector.js"></script>
     <script src="./js/Keyboard.js"></script>
     <script src="./js/Force.js"></script>
+    <script src="./js/Enviroment.js"></script>
     <script src="./js/Arrow.js"></script>
     <script src="./js/Archer.js"></script>
 
@@ -95,8 +96,6 @@
             }
 
             addObject(obj) {
-                console.log(obj);
-
                 this.objects.push(obj)
             }
 
@@ -119,20 +118,13 @@
                 ctx.clearRect(0, 0, width, height);
 
                 ctx.drawImage(this.background, 0, 0, width, height);
+
                 for (let obj of this.objects) {
-
                     obj.update();
-
-                    // console.log(this.objects);
-
-
-
 
                 }
 
-
             }
-
             resize() {
                 return
                 width = window.outerWidth / 2
