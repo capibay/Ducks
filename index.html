@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Verdana
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        canvas {
+            border: 1px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated
+        }
+
+        .container {
+            position: relative;
+            margin: 0 auto;
+            width: 100vw;
+            height: 100vh;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <canvas id="canvas" width="900" height="600"></canvas>
+    </div>
+
+    <script src="./js/Vector.js"></script>
+    <script src="./js/Keyboard.js"></script>
+    <script src="./js/Force.js"></script>
+    <script src="./js/Arrow.js"></script>
+    <script src="./js/Archer.js"></script>
+
+
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var width = canvas.offsetWidth;
+        var height = canvas.offsetHeight;
+
+
+        class GameManager {
+            constructor() {
+
+                this.objects = []
+                this.width = canvas.offsetWidth;
+                this.height = canvas.offsetHeight;
+
+                this.background = new Image();
+                this.background.src = "./tlo.png";
+                this.init();
+            }
+
+            init() {
+                // this.resize()
+
+                this.objects.push(new Archer())
+
+
+                // window.addEventListener('resize', (e) => {
+                //     console.log(window.outerWidth);
+                //     this.resize()
+                // })
+                this.GameLoop();
+            }
+
+            addObject(obj) {
+                console.log(obj);
+
+                this.objects.push(obj)
+            }
+
+            GameLoop() {
+
+                requestAnimationFrame(() => {
+                    this.GameLoop()
+                });
+
+                // setInterval(() => {
+                //     this.GameLoop()
+                // }, 500)
+
+
+
+                this.render();
+            }
+
+            render() {
+                ctx.clearRect(0, 0, width, height);
+
+                ctx.drawImage(this.background, 0, 0, width, height);
+                for (let obj of this.objects) {
+
+                    obj.update();
+
+                    // console.log(this.objects);
+
+
+
+
+                }
+
+
+            }
+
+            resize() {
+                return
+                width = window.outerWidth / 2
+                height = window.outerHeight / 2
+                // console.log(width, height);
+
+                const pixelRatio = window.devicePixelRatio || 1;
+
+                canvas.width = width * pixelRatio;
+                canvas.height = height * pixelRatio;
+
+                canvas.style.width = `${window.outerWidth / 2}px`;
+                canvas.style.height = `${window.outerHeight / 2}px`;
+
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.imageSmoothingEnabled = false;
+
+                ctx.scale(pixelRatio, pixelRatio);
+            }
+
+        }
+
+        let game = new GameManager();
+
+
+    </script>
+
+</body>
+
+</html>
