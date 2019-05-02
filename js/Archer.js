@@ -2,18 +2,18 @@ let bows = [
     {
         name: 'Bow1',
         src: './bow2.png',
-        size: 150,
+        size: 100,
         center: {
             x: 0,
             y: 0
         },
         bowstring: {
-            up: 65,
-            down: -65,
-            y: 33
+            up: 45,
+            down: -45,
+            y: 22
 
         },
-        maxTension: 60
+        maxTension: 40
     }
 ]
 
@@ -22,7 +22,7 @@ let bows = [
 class Archer {
     constructor() {
         this.bow;
-        this.position = new Vector(220, 450);
+        this.position = new Vector(200, 750);
         this.angle = 0;
         this.currentArrow;
         this.isAiming = false;
@@ -119,9 +119,8 @@ class Archer {
         vec.x = Math.cos(this.angle - Math.PI / 2);
         vec.y = Math.sin(this.angle - Math.PI / 2);
         vec.normalize()
-        vec.mult(this.tension / 10)
+        vec.mult((this.tension + this.bow.bowstring.y / 10) / 10)
         this.currentArrow.relase(vec, this.position.y)
-        // this.currentArrow = new Object();
     }
 
 }
