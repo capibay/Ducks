@@ -1,17 +1,12 @@
 let bows = [
     {
         name: 'Bow1',
-        src: './bow2.png',
+        src: './assets/bows/bow.png',
         size: 100,
-        center: {
-            x: 0,
-            y: 0
-        },
         bowstring: {
             up: 45,
             down: -45,
             y: 22
-
         },
         maxTension: 40
     }
@@ -26,6 +21,7 @@ class Archer {
         this.angle = 0;
         this.currentArrow;
         this.isAiming = false;
+        this.tension;
 
         this.init()
     }
@@ -36,7 +32,7 @@ class Archer {
 
         let canvas = document.getElementById('canvas');
 
-        canvas.addEventListener('mousedown', () => {
+        window.addEventListener('mousedown', () => {
             this.aiming()
         })
 
@@ -86,11 +82,11 @@ class Archer {
         var shooting = () => {
             this.isAiming = false;
             this.shoot()
-            canvas.removeEventListener('mousemove', targeting)
+            window.removeEventListener('mousemove', targeting)
             window.removeEventListener('mouseup', shooting)
         }
 
-        canvas.addEventListener('mousemove', targeting)
+        window.addEventListener('mousemove', targeting)
 
         window.addEventListener('mouseup', shooting)
 

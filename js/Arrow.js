@@ -2,8 +2,9 @@
 let arrows = [
     {
         name: 'Arrow1',
-        src: './arrow2.png',
-        size: 66
+        src: './assets/arrows/arrow.png',
+        size: 66,
+        damage: 10
     }
 ]
 
@@ -14,7 +15,7 @@ function getArrowByName(name) {
         }
     }
 }
-let ctx2 = canvas.getContext('2d');
+// let ctx2 = canvas.getContext('2d');
 
 class Arrow {
     constructor(name) {
@@ -61,12 +62,16 @@ class Arrow {
 
         ctx.save();
         ctx.translate(this.position.x + this.arrow.size / 2, this.position.y)
-        ctx.fillStyle = 'red';
-        ctx.fillRect(0, 0, 10, 10)
+        // ctx.fillStyle = 'red';
+        // ctx.fillRect(0, 0, 10, 10)
         ctx.rotate(this.angle)
         ctx.drawImage(this.arrow.image, -this.arrow.size / 2, -this.arrow.size / 2, this.arrow.size, this.arrow.size);
         ctx.restore()
 
+        this.getArrowheadPosition()
+        if (this.position.y + this.arrow.size > height) {
+            return 'delete'
+        }
     }
 
     setOnBow(pos, tension) {
@@ -89,5 +94,19 @@ class Arrow {
 
     }
 
+    getArrowheadPosition() {
+        let pos = this.position.clone();
+        pos.add(new Vector(this.arrow.size / 2, 0))
+        let arr = this.velocity.clone();
+        arr.normalize()
+        arr.setMag(this.arrow.size / 2)
+        pos.add(arr)
+        // ctx.fillRect(pos.x, pos.y, 5, 5)
+        return pos;
 
+    }
+
+    getDamage() {
+        return this.arrow.damage;
+    }
 }
