@@ -27,7 +27,7 @@ class DuckManager {
         let posVec = new Vector();
         let speedVec = new Vector();
         let h = Math.random() * 300
-        let speed = (Math.random() * 3 + 3) / 100
+        let speed = (Math.random() * 1 + 3) / 100
         if (Math.floor(Math.random() * 2)) {
             posVec.set(0, h)
             speedVec.set(speed, 0)

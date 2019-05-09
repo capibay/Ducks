@@ -10,7 +10,9 @@ let ducks = [
             './assets/ducks/standard/duckgray2.png'
         ],
         size: 100,
-        hp: 10
+        hp: 10,
+        score: 10,
+        coins: 0
     },
 
     {
@@ -23,7 +25,9 @@ let ducks = [
             './assets/ducks/standard/duckgray2.png'
         ],
         size: 100,
-        hp: 10
+        hp: 10,
+        score: 10,
+        coins: 20
     },
 
     {
@@ -36,7 +40,9 @@ let ducks = [
             './assets/ducks/standard/duckgold2.png'
         ],
         size: 120,
-        hp: 20
+        hp: 20,
+        score: 10,
+        coins: 150
     }
 ]
 
@@ -154,20 +160,21 @@ class Duck {
     }
 
     checkHit(arrowhead, damage) {
-        // console.log(arrowhead);
-        if (arrowhead.x > this.position.x - this.duck.size / 2 &&
-            arrowhead.x < this.position.x - this.duck.size / 2 + this.duck.size &&
-            arrowhead.y > this.position.y - 10 &&
-            arrowhead.y < this.position.y - 10 + this.duck.size / 4
-        ) {
-            this.hp -= damage;
-            // this.speed.mult(Math.random() * 5 + 3)
-            if (this.hp <= 0) {
-                this.die();
+        if (this.alive) {
+            // console.log(arrowhead);
+            if (arrowhead.x > this.position.x - this.duck.size / 2 &&
+                arrowhead.x < this.position.x - this.duck.size / 2 + this.duck.size &&
+                arrowhead.y > this.position.y - 10 &&
+                arrowhead.y < this.position.y - 10 + this.duck.size / 4
+            ) {
+                this.hp -= damage;
+                // this.speed.mult(Math.random() * 5 + 3)
+                if (this.hp <= 0) {
+                    this.die();
+                }
+                return true
             }
-            return true
         }
-
         return false;
     }
 
@@ -178,5 +185,10 @@ class Duck {
     die() {
         this.alive = false;
         this.applyForce(new Force('Gravity', new Vector(0, 1)))
+        game.addScore(this.duck.score)
+        game.addCoins(this.duck.coins)
+
+        if (this.duck.coins > 0)
+            game.addObject(new BonusPoint(this.position.x + this.duck.size / 2, this.position.y, this.duck.coins))
     }
 }

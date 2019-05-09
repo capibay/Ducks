@@ -10,6 +10,8 @@ class GameManager {
 
         this.backgroundThemes = ['lake.png', 'desert.jpg'];
         this.duckThemes = ['standard', 'dark']
+        this.coins = 0;
+        this.score = 0;
 
         this.init();
     }
@@ -24,8 +26,10 @@ class GameManager {
         //     console.log(window.outerWidth);
         //     this.resize()
         // })
-        this.loadBackgroundTheme(this.backgroundThemes[1]);
-        this.loadDuckTheme(this.duckThemes[1])
+        this.loadBackgroundTheme(this.backgroundThemes[0]);
+        this.loadDuckTheme(this.duckThemes[0])
+
+        ui.renderSettings(this.backgroundThemes, this.duckThemes)
         this.GameLoop();
     }
 
@@ -99,18 +103,39 @@ class GameManager {
     }
 
     loadDuckTheme(name) {
+        console.log('s');
 
         for (let duck of ducks) {
-            for (let animation of duck.animations) {
-                animation = animation.split('/')
-                animation[3] = name;
-                animation = animation.join('/');
+            for (let i = 0; i < duck.animations.length; i++) {
+                let tab = duck.animations[i].split('/')
+                tab[3] = name;
+                duck.animations[i] = tab.join('/');
+
             }
+            // // animation = animation.split('/')
+            // // animation[3] = name;
+            // // animation = animation.join('/');
+            // // animation = "s"
+            // // console.log(animation);
+            // animation = "as"
+
         }
+        console.log(ducks);
+
 
     }
 
     loadBackgroundTheme(name) {
         this.background.src = "./assets/backgrounds/" + name;
+    }
+
+    addScore(s) {
+        this.score += s
+        ui.updateScore(this.score);
+    }
+
+    addCoins(c) {
+        this.coins += c
+        ui.updateCoins(this.coins);
     }
 }
