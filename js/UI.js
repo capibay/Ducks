@@ -57,7 +57,11 @@ var ui = {
 
     updateCoins(c) {
         document.querySelector('#coins').innerText = "Coins: " + c;
-    }
+    },
+
+    updateLevel(s) {
+        document.querySelector('#level').innerText = "Level: " + s;
+    },
 
 }
 ui.init();

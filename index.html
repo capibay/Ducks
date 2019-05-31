@@ -50,84 +50,6 @@
 
         }
 
-        #ui {
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            user-select: none;
-
-        }
-
-        #ui>* {
-            padding: 0;
-            position: absolute;
-            z-index: 1;
-        }
-
-        #ui>#info {
-            color: white;
-            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-        }
-
-        #ui #bar {
-            right: 0;
-            bottom: 0;
-            width: calc(100% - 400px);
-            height: 200px;
-            background: #ffffffaa;
-        }
-
-        #ui #bar h1 {
-            font-size: 15px;
-        }
-
-        #ui #equipment {
-            float: left;
-            width: calc(50%);
-            height: 200px;
-
-        }
-
-        #ui #shop {
-            float: left;
-            width: calc(50%);
-            height: 100%;
-        }
-
-        #ui #settings {
-            float: left;
-            width: 200px;
-            height: 100%;
-        }
-
-        #ui .item-container {
-            border: 2px solid black;
-            margin: 0 40px;
-            height: 100%;
-            background: gray;
-            display: flex;
-            justify-content: flex-start;
-
-        }
-
-        #ui .item {
-            width: 100px;
-            height: 100px;
-        }
-
-        #ui #settings-icon {
-            top: 0;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            margin: 10px;
-            z-index: 11;
-        }
-
         #settings {
             top: 0;
             width: 400px;
@@ -158,6 +80,7 @@
             margin-bottom: 20px;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="ui.css">
 </head>
 
 <body>
@@ -190,25 +113,14 @@
                 <div id="equipment">
                     <h1>Equipment</h1>
                     <div class="item-container">
-                        <div class="item">
-                            a
-                        </div>
 
-                        <div class="item">
-                            c
-                        </div>
                     </div>
                 </div>
 
                 <div id="shop">
                     <h1>Shop</h1>
                     <div class="item-container">
-                        <div class="item">
 
-                        </div>
-                        <div class="item">
-
-                        </div>
                     </div>
                 </div>
 
@@ -217,7 +129,6 @@
         </div>
     </div>
     <script src="./js/Vector.js"></script>
-    <script src="./js/Keyboard.js"></script>
     <script src="./js/Force.js"></script>
     <script src="./js/Enviroment.js"></script>
     <script src="./js/Arrow.js"></script>
@@ -227,6 +138,7 @@
     <script src="./js/DuckManager.js"></script>
     <script src="./js/GameManager.js"></script>
     <script src="./js/UI.js"></script>
+    <script src="./js/Shop.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script>
@@ -235,7 +147,7 @@
         var width = canvas.offsetWidth;
         var height = canvas.offsetHeight;
 
-        let game = new GameManager();
+        var game = new GameManager();
 
 
 

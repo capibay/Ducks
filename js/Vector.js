@@ -69,7 +69,6 @@ class Vector {
     }
 
     angleBetween360(vec) {
-
         return Math.atan2(this.det(vec), this.dot(vec))
     }
 }

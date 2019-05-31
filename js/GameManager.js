@@ -2,34 +2,35 @@
 class GameManager {
     constructor() {
 
-        this.objects = []
+        this.objects = [] //tablica objektów w grze
         this.width = canvas.offsetWidth;
         this.height = canvas.offsetHeight;
 
         this.background = new Image();
-
+        this.duckManager;
         this.backgroundThemes = ['lake.png', 'desert.jpg'];
         this.duckThemes = ['standard', 'dark']
-        this.coins = 0;
+        this.coins = 600;
         this.score = 0;
+        this.level = 1;
+        this.levelsPoint = [20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 300, 320, 340];
+        this.equipment = [];
+        this.equipmentDiv = document.querySelector('#equipment .item-container');
+        this.archer;
 
         this.init();
     }
 
     init() {
-        // this.resize()
+        this.archer = new Archer();
+        this.objects.push(this.archer);
+        this.duckManager = new DuckManager();
+        this.objects.push(this.duckManager);
 
-        this.objects.push(new Archer())
-        this.objects.push(new DuckManager())
-
-        // window.addEventListener('resize', (e) => {
-        //     console.log(window.outerWidth);
-        //     this.resize()
-        // })
         this.loadBackgroundTheme(this.backgroundThemes[0]);
         this.loadDuckTheme(this.duckThemes[0])
 
-        ui.renderSettings(this.backgroundThemes, this.duckThemes)
+        ui.renderSettings(this.backgroundThemes, this.duckThemes);
         this.GameLoop();
     }
 
@@ -39,15 +40,9 @@ class GameManager {
 
     GameLoop() {
 
-        requestAnimationFrame(() => {
+        requestAnimationFrame(() => {// requestAnimationFrame wywołuje funkcje przekaząw argumencie optymalnie do aktualnych zasobów procesora.
             this.GameLoop()
         });
-
-        // setInterval(() => {
-        //     this.GameLoop()
-        // }, 500)
-
-
 
         this.render();
     }
@@ -55,7 +50,7 @@ class GameManager {
     render() {
         ctx.clearRect(0, 0, width, height);
 
-        ctx.drawImage(this.background, 0, 0, width, height);
+        ctx.drawImage(this.background, 0, 0, width, height);//rysujemy tło na naszej scenie
 
         for (let [i, obj] of this.objects.entries()) {
             if (obj instanceof Duck) {
@@ -63,32 +58,17 @@ class GameManager {
             }
             switch (obj.update()) {
                 case 'delete': {
+                    if (obj instanceof Duck)
+                        console.log('deleted');
+
                     this.objects.splice(i, 1)
                 }
             }
 
 
         }
+        this.checkLevelUpdate();
 
-    }
-    resize() {
-        return
-        width = window.outerWidth / 2
-        height = window.outerHeight / 2
-        // console.log(width, height);
-
-        const pixelRatio = window.devicePixelRatio || 1;
-
-        canvas.width = width * pixelRatio;
-        canvas.height = height * pixelRatio;
-
-        canvas.style.width = `${window.outerWidth / 2}px`;
-        canvas.style.height = `${window.outerHeight / 2}px`;
-
-        ctx.mozImageSmoothingEnabled = false;
-        ctx.imageSmoothingEnabled = false;
-
-        ctx.scale(pixelRatio, pixelRatio);
     }
 
     checkDuckHit(duck) {
@@ -103,26 +83,13 @@ class GameManager {
     }
 
     loadDuckTheme(name) {
-        console.log('s');
-
         for (let duck of ducks) {
             for (let i = 0; i < duck.animations.length; i++) {
                 let tab = duck.animations[i].split('/')
                 tab[3] = name;
                 duck.animations[i] = tab.join('/');
-
             }
-            // // animation = animation.split('/')
-            // // animation[3] = name;
-            // // animation = animation.join('/');
-            // // animation = "s"
-            // // console.log(animation);
-            // animation = "as"
-
         }
-        console.log(ducks);
-
-
     }
 
     loadBackgroundTheme(name) {
@@ -138,4 +105,32 @@ class GameManager {
         this.coins += c
         ui.updateCoins(this.coins);
     }
+
+    buyItem(item) {
+        this.addCoins(-item.item.cost);
+        this.equipment.push(item);
+        this.updateEquipment();
+    }
+
+    updateEquipment() {
+        this.equipmentDiv.innerHTML = "";
+
+        for (let item of this.equipment) {
+            this.equipmentDiv.appendChild(item.domElement);
+        }
+    }
+
+    checkLevelUpdate() {
+        if (this.score >= this.levelsPoint[this.level - 1]) {
+            this.nextLevel();
+        }
+    }
+
+    nextLevel() {
+        this.level++;
+        this.duckManager.nextLevel();
+        ui.updateLevel(this.level);
+    }
+
+
 }

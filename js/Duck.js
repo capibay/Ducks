@@ -1,23 +1,21 @@
 
-let ducks = [
+let ducks = [//tablice rodzajów kaczek
     {
         name: 'Duck1',
-        src: '',
         animations: [
             './assets/ducks/standard/duckgray1.png',
             './assets/ducks/standard/duckgray2.png',
             './assets/ducks/standard/duckgray3.png',
             './assets/ducks/standard/duckgray2.png'
         ],
-        size: 100,
+        size: 100,//rozmiar kaczki
         hp: 10,
-        score: 10,
-        coins: 0
+        score: 10,//ile punktów za kaczke
+        coins: 0//ile pieniedzy za kaczke
     },
 
     {
         name: 'Duck2',
-        src: '',
         animations: [
             './assets/ducks/standard/duckgray1.png',
             './assets/ducks/standard/duckgray2.png',
@@ -25,14 +23,13 @@ let ducks = [
             './assets/ducks/standard/duckgray2.png'
         ],
         size: 100,
-        hp: 10,
+        hp: 20,
         score: 10,
         coins: 20
     },
 
     {
         name: 'Duck3',
-        src: '',
         animations: [
             './assets/ducks/standard/duckgold1.png',
             './assets/ducks/standard/duckgold2.png',
@@ -40,7 +37,7 @@ let ducks = [
             './assets/ducks/standard/duckgold2.png'
         ],
         size: 120,
-        hp: 20,
+        hp: 30,
         score: 10,
         coins: 150
     }
@@ -82,7 +79,9 @@ class Duck {
             frame.src = animation
             this.animationFrames.push(frame)
         }
+
         this.position.y += this.duck.size
+
         if (this.speed.x < 0) {
             this.position.x += this.duck.size
         }
@@ -92,13 +91,14 @@ class Duck {
         this.hp = this.duck.hp;
         this.alive = true;
 
+        this.velocity.add(this.speed)
     }
 
     update() {
 
         this.animate()
         this.acceleration.set(0, 0)
-        this.acceleration.add(this.speed)
+
         for (let force of this.forces) {
             this.acceleration.add(force)
         }
@@ -120,7 +120,8 @@ class Duck {
 
         ctx.restore()
 
-        if (this.position.x < -this.duck.size * 2 || this.position.x > width + this.duck.size * 2) {
+
+        if (this.position.x < -this.duck.size * 2 || this.position.x > width + this.duck.size * 2 || this.position.y > height + 100) {
             return 'delete'
         }
 
@@ -131,7 +132,8 @@ class Duck {
         var now = Date.now();
         var dt = now - this.lastUpdate;
 
-        if (dt > 100 - this.velocity.x * 5) {
+        if (dt > 100 - this.velocity.x * 5) {//jezeli czas ostatniej animacji jest wiekszy od pewnej liczby to nr klatki zwiększamy o jeden
+            //             im kaczka szybciej leci(im velocity.x jest większe) typ szybciej zmieniamy klatki
             this.lastUpdate = now;
             this.currentFrame++;
             if (this.currentFrame > this.animationFrames.length - 1) {
@@ -168,7 +170,10 @@ class Duck {
                 arrowhead.y < this.position.y - 10 + this.duck.size / 4
             ) {
                 this.hp -= damage;
-                // this.speed.mult(Math.random() * 5 + 3)
+                let addedSpeed = this.velocity.clone().normalize();
+                addedSpeed.mult(Math.random() * 2 + 0.1);
+                addedSpeed.y = 0;
+                this.velocity.add(addedSpeed);
                 if (this.hp <= 0) {
                     this.die();
                 }

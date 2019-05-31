@@ -4,7 +4,12 @@ let arrows = [
         name: 'Arrow1',
         src: './assets/arrows/arrow.png',
         size: 66,
-        damage: 10
+        damage: 10,//obrazenia
+        cost: 20,//koszt w sklepie
+        itemProps: {
+            damage: 10//co pokaze sie w sklepie
+        }
+
     }
 ]
 
@@ -15,7 +20,6 @@ function getArrowByName(name) {
         }
     }
 }
-// let ctx2 = canvas.getContext('2d');
 
 class Arrow {
     constructor(name) {
@@ -55,9 +59,12 @@ class Arrow {
 
         // let force = enviroment.calcForces(this.forces, this.mass);
         // this.acceleration.add(force)
-        this.angle = new Vector(0, -1).angleBetween360(this.acceleration);
+        this.angle = new Vector(0, -1).angleBetween360(this.acceleration);//kąt obrotu strzały
+        //na podstawie wektora odniesienia (0,-1) i wektora przyspieszenia który jest wypadkową wszystkich sił i skoro jest wektorem
+        //to wskazuje kierunek obliczam kąt między nimi który jest kątem obrotu strzały.
+
         this.velocity.add(this.acceleration);
-        this.velocity.div(2);
+        this.velocity.div(2);//podzielenie predkosci przez dwa zeby dodać realizmu => strzała leci dwa razy wolnieje
         this.position.add(this.velocity);
 
         ctx.save();
@@ -68,7 +75,7 @@ class Arrow {
         ctx.drawImage(this.arrow.image, -this.arrow.size / 2, -this.arrow.size / 2, this.arrow.size, this.arrow.size);
         ctx.restore()
 
-        this.getArrowheadPosition()
+        // this.getArrowheadPosition()
         if (this.position.y + this.arrow.size > height) {
             return 'delete'
         }

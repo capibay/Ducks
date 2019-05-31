@@ -6,8 +6,8 @@ class BonusPoint {
         this.acceleration = new Vector(0, -0.1);
         this.points = points;
 
-        this.time = 1000;
-        this.lastUpdate = Date.now();
+        this.time = 1000;//czas ile "żyje" punkt 
+        this.lastUpdate = Date.now();//czas utworzenia obiektu bonus point
 
         this.init();
     }
@@ -27,7 +27,7 @@ class BonusPoint {
         ctx.fillStyle = "yellow"
         ctx.lineWidth = 3;
         ctx.strokeStyle = "#FF0000";
-        ctx.strokeText(this.points, this.position.x, this.position.y);
+        ctx.strokeText(this.points, this.position.x, this.position.y);//1 argument tekst 2 i 3 to pozycje tekstu
         ctx.fillText(this.points, this.position.x, this.position.y);
         ctx.restore();
 
@@ -36,5 +36,4 @@ class BonusPoint {
         }
 
     }
-} var now = Date.now();
-var dt = now - this.lastUpdate;
+}
